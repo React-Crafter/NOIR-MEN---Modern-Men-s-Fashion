@@ -1,0 +1,6 @@
+{
+  "name": "NOIR MEN - Modern Men's Fashion",
+  "description": "Premium Bangladeshi men's fashion e-commerce store demo featuring curated Panjabi, shirts, t-shirts, and trousers with Cash on Delivery across Bangladesh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
