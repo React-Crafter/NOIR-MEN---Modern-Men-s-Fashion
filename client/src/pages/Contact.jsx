@@ -1,154 +1,153 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, MessageSquare, Send } from 'lucide-react';
-import { useProducts } from '../context/ProductContext.jsx';
+import { MapPin, Phone, Mail, Clock, MessageSquare, CheckCircle2 } from 'lucide-react';
 
 export default function Contact() {
-  const { addToast } = useProducts();
-  const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: '', phone: '', message: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      addToast('Please provide your name and phone number', 'error');
-      return;
-    }
-    setSent(true);
-    addToast('Thank you! Our concierge will contact you within 2 business hours.');
-    setFormData({ name: '', phone: '', email: '', message: '' });
+    if (!form.name || !form.phone) return;
+    setSubmitted(true);
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-      <div className="text-center max-w-2xl mx-auto mb-16">
-        <span className="text-xs uppercase tracking-[0.25em] font-bold text-stone-500 mb-2 block">
-          Concierge & Showrooms
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+      <div className="max-w-2xl mb-12">
+        <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold mb-1 block">
+          Client Support
         </span>
-        <h1 className="text-3xl sm:text-5xl font-black text-stone-900 font-serif tracking-tight mb-4">
-          We Are At Your Service
+        <h1
+          className="text-2xl sm:text-4xl font-bold tracking-tight text-neutral-900 mb-2"
+          style={{ fontFamily: "'Syne', sans-serif" }}
+        >
+          Get in Touch with NOIR MEN
         </h1>
-        <p className="text-sm text-stone-600 font-light">
-          Visit our flagship ateliers in Dhaka or connect directly with our style concierge for personal fitting advice and bulk orders.
+        <p className="text-xs sm:text-sm text-neutral-600">
+          Have an inquiry regarding sizing, custom wedding party orders, or courier delivery? Our customer team is here to assist.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        {/* Contact Info & Showrooms */}
-        <div className="space-y-8">
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/90 shadow-2xs space-y-6">
-            <h3 className="text-lg font-bold text-stone-900 border-b border-stone-100 pb-3">
-              Direct Contact
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        {/* Contact info (5 cols) */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="bg-white p-6 rounded-lg border border-neutral-200 space-y-4">
+            <h3 className="font-bold text-sm uppercase tracking-wider text-neutral-900">
+              Studio & Showroom
             </h3>
-            <div className="space-y-4 text-xs sm:text-sm text-stone-700">
+
+            <div className="space-y-4 text-xs text-neutral-600">
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-stone-900 shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-neutral-900 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-stone-900">Hotline & WhatsApp:</strong>
-                  <span>+880 1712-345678 (10:00 AM - 10:00 PM)</span>
+                  <strong className="text-neutral-900 block font-semibold">Banani Flagship</strong>
+                  <p>House 42, Road 11, Block D, Banani, Dhaka-1213, Bangladesh</p>
                 </div>
               </div>
+
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-stone-900 shrink-0 mt-0.5" />
+                <Phone className="w-4 h-4 text-neutral-900 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-stone-900">Email:</strong>
-                  <span>concierge@noirmen.com.bd</span>
+                  <strong className="text-neutral-900 block font-semibold">Phone & WhatsApp</strong>
+                  <p className="font-mono text-neutral-800">+880 1711 000 000</p>
+                  <p className="text-neutral-400 text-[11px]">Direct WhatsApp support available</p>
                 </div>
               </div>
+
               <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-stone-900 shrink-0 mt-0.5" />
+                <Mail className="w-4 h-4 text-neutral-900 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="block text-stone-900">Customer Support Hours:</strong>
-                  <span>Saturday to Thursday: 10:00 AM – 10:00 PM (Friday: 2:00 PM – 10:00 PM)</span>
+                  <strong className="text-neutral-900 block font-semibold">Email Inquiries</strong>
+                  <p>support@noirmen.com</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Clock className="w-4 h-4 text-neutral-900 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-neutral-900 block font-semibold">Hours of Operation</strong>
+                  <p>Saturday – Thursday: 10:00 AM – 10:00 PM</p>
+                  <p>Friday: 2:00 PM – 10:00 PM</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Showroom Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 text-xs space-y-2">
-              <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Flagship Atelier</span>
-              <h4 className="text-sm font-bold text-stone-900">Banani, Dhaka</h4>
-              <p className="text-stone-600">House 42, Road 11, Block D, Banani Commercial Area, Dhaka-1213</p>
-            </div>
-            <div className="bg-stone-50 rounded-2xl p-5 border border-stone-200 text-xs space-y-2">
-              <span className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Studio & Lounge</span>
-              <h4 className="text-sm font-bold text-stone-900">Dhanmondi, Dhaka</h4>
-              <p className="text-stone-600">Level 3, Imperial Tower, Road 27 (Old), Dhanmondi, Dhaka-1209</p>
-            </div>
+          <div className="p-4 bg-neutral-100 rounded-lg border border-neutral-200 text-xs text-neutral-600">
+            <p className="font-semibold text-neutral-900 mb-1">Corporate & Festive Orders</p>
+            <p className="text-[11px] leading-relaxed">
+              We provide tailored packages for corporate uniforms, wedding groomsmen sets, and festive gifting with doorstep delivery across Bangladesh.
+            </p>
           </div>
         </div>
 
-        {/* Message Form */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-stone-200/90 shadow-2xs">
-          <h3 className="text-lg font-bold text-stone-900 mb-2">Send an Inquiry</h3>
-          <p className="text-xs text-stone-500 mb-6">
-            For bespoke size inquiries, corporate bulk orders, or exchange requests.
-          </p>
+        {/* Message Form (7 cols) */}
+        <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-lg border border-neutral-200">
+          <h3 className="font-bold text-sm uppercase tracking-wider text-neutral-900 mb-4 pb-2 border-b border-neutral-100">
+            Send Us a Message
+          </h3>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
-                Your Name
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.name}
-                onChange={e => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Full Name"
-                className="w-full px-4 py-2.5 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-hidden focus:border-stone-900"
-              />
+          {submitted ? (
+            <div className="py-12 text-center">
+              <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center mb-3">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <h4 className="text-base font-semibold text-neutral-900 mb-1">Message Received</h4>
+              <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                Thank you, {form.name}. Our Dhaka customer support team will contact you via phone or WhatsApp shortly.
+              </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
-                  Mobile Number
+                <label className="block text-xs font-semibold text-neutral-800 mb-1">
+                  Your Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm(f => ({ ...f, name: e.target.value }))}
+                  placeholder="e.g. Shakib Al Hasan"
+                  className="w-full px-3.5 py-2.5 text-xs bg-white border border-neutral-300 rounded focus:outline-none focus:border-neutral-900"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-800 mb-1">
+                  Mobile Number (BD) *
                 </label>
                 <input
                   type="tel"
                   required
-                  value={formData.phone}
-                  onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="017XXXXXXXX"
-                  className="w-full px-4 py-2.5 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-hidden focus:border-stone-900"
+                  value={form.phone}
+                  onChange={(e) => setForm(f => ({ ...f, phone: e.target.value }))}
+                  placeholder="01XXXXXXXXX"
+                  className="w-full px-3.5 py-2.5 text-xs bg-white border border-neutral-300 rounded focus:outline-none focus:border-neutral-900"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
-                  Email (Optional)
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="name@email.com"
-                  className="w-full px-4 py-2.5 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-hidden focus:border-stone-900"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
-                Message or Order Notes
-              </label>
-              <textarea
-                rows={4}
-                required
-                value={formData.message}
-                onChange={e => setFormData({ ...formData, message: e.target.value })}
-                placeholder="How can our concierge team assist you today?"
-                className="w-full px-4 py-2.5 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-hidden focus:border-stone-900"
-              />
-            </div>
 
-            <button
-              type="submit"
-              className="w-full bg-[#1A1A1A] hover:bg-black text-white text-xs font-bold uppercase tracking-wider py-3.5 px-6 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
-            >
-              <Send className="w-4 h-4" />
-              <span>Submit Inquiry</span>
-            </button>
-          </form>
+              <div>
+                <label className="block text-xs font-semibold text-neutral-800 mb-1">
+                  Message / Order Reference
+                </label>
+                <textarea
+                  rows={4}
+                  value={form.message}
+                  onChange={(e) => setForm(f => ({ ...f, message: e.target.value }))}
+                  placeholder="Tell us what you need help with..."
+                  className="w-full px-3.5 py-2.5 text-xs bg-white border border-neutral-300 rounded focus:outline-none focus:border-neutral-900"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-7 py-3 bg-neutral-900 text-white rounded text-xs font-semibold uppercase tracking-wider hover:bg-neutral-800 transition-colors"
+              >
+                Send Message
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

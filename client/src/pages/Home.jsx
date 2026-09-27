@@ -1,192 +1,239 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
-import { useProducts } from '../context/ProductContext.jsx';
-import { CATEGORIES } from '../data/categories.js';
-import CategoryCard from '../components/CategoryCard.jsx';
-import ProductGrid from '../components/ProductGrid.jsx';
-import SectionHeading from '../components/SectionHeading.jsx';
+import { ArrowRight, Sparkles, Shield, Clock, RefreshCw, Award } from 'lucide-react';
+import heroImg from '../assets/images/hero_noir_men_1790217929182.jpg';
+import { CATEGORIES } from '../data/categories';
+import { useProducts } from '../context/ProductContext';
+import CategoryCard from '../components/CategoryCard';
+import ProductGrid from '../components/ProductGrid';
+import SectionHeading from '../components/SectionHeading';
 
 export default function Home() {
-  const { products, loading } = useProducts();
-
-  const featuredProducts = products.filter(p => p.isFeatured).slice(0, 4);
+  const { products } = useProducts();
+  const featuredProducts = products.filter(p => p.isFeatured).slice(0, 8);
   const newArrivals = products.filter(p => p.isNew).slice(0, 4);
 
   return (
-    <div className="space-y-16 md:space-y-24 pb-20">
-      {/* Hero Section */}
-      <section className="relative min-h-[580px] md:min-h-[700px] bg-stone-950 flex items-center overflow-hidden">
+    <div className="space-y-16 sm:space-y-24 pb-16">
+      {/* 1. Hero Section */}
+      <section className="relative bg-neutral-900 text-white overflow-hidden min-h-[580px] lg:min-h-[680px] flex items-center">
+        {/* Background Image with subtle overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/assets/images/hero_noir_men_1790217929182.jpg"
-            alt="NOIR MEN Signature Collection"
-            className="w-full h-full object-cover object-top opacity-60 filter contrast-105"
+            src={heroImg}
+            alt="NOIR MEN Editorial Campaign"
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover object-center sm:object-right opacity-60 scale-100 transition-transform duration-1000"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent" />
-          <div className="absolute inset-0 bg-radial-at-c from-transparent via-transparent to-black/80" />
+          {/* Measured Scrim for contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/75 to-transparent sm:w-2/3" />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-transparent to-transparent sm:hidden" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-stone-200 text-xs font-semibold tracking-wider uppercase mb-6">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Autumn/Festive Editorial 2026</span>
-            </div>
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 w-full">
+          <div className="max-w-xl">
+            <span className="inline-block text-xs uppercase tracking-widest text-neutral-300 font-semibold mb-3">
+              Dhaka · Autumn / Winter 2026 Collection
+            </span>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white font-serif tracking-tight leading-[1.08] mb-6">
-              The Architecture of Modern Masculinity.
+            <h1
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4 leading-tight sm:leading-none"
+              style={{ fontFamily: "'Syne', sans-serif", textWrap: 'balance' }}
+            >
+              Modern Men's Fashion
             </h1>
 
-            <p className="text-base sm:text-lg text-stone-300 font-normal leading-relaxed mb-8 max-w-xl">
-              Impeccably tailored Panjabis, Egyptian Giza cotton shirts, and structured trousers designed for Dhaka executives and discerning celebrations.
+            <p className="text-base sm:text-lg text-neutral-300 mb-8 font-light leading-relaxed max-w-lg">
+              Elevate your everyday style with timeless essentials designed for the modern man. Handcrafted Panjabi, tailored shirts, and premium heavyweight streetwear.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
               <Link
                 to="/shop"
-                className="inline-flex items-center justify-center gap-2 bg-white text-stone-950 hover:bg-stone-200 text-xs font-bold uppercase tracking-wider px-8 py-4 rounded-full transition-all duration-200 shadow-xl"
+                className="px-7 py-3.5 bg-white text-neutral-950 text-xs font-bold uppercase tracking-wider rounded text-center hover:bg-neutral-100 transition-colors shadow-lg shadow-black/20"
               >
-                <span>Shop All Items</span>
-                <ArrowRight className="w-4 h-4" />
+                Shop Collection
               </Link>
               <Link
-                to="/shop?category=panjabi"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs font-bold uppercase tracking-wider px-8 py-4 rounded-full backdrop-blur-md transition-all duration-200"
+                to="/shop?sort=newest"
+                className="px-7 py-3.5 bg-transparent border border-white/60 text-white text-xs font-bold uppercase tracking-wider rounded text-center hover:bg-white hover:text-neutral-950 transition-colors"
               >
-                <span>Panjabi Collection</span>
+                Explore New Arrivals
               </Link>
             </div>
 
-            {/* Quick highlight points */}
-            <div className="mt-12 pt-8 border-t border-white/15 flex flex-wrap gap-6 text-xs text-stone-300 font-medium">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Cash on Delivery across Bangladesh</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>100% Genuine Natural Fabrics</span>
-              </div>
+            {/* Micro trust markers */}
+            <div className="mt-10 pt-6 border-t border-white/10 flex items-center gap-6 text-xs text-neutral-400">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Cash on Delivery Nationwide
+              </span>
+              <span>·</span>
+              <span>7-Day Return Policy</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Showcase */}
+      {/* 2. Category Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <div>
-            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-stone-500 mb-1 block">
-              Curated Lines
-            </span>
-            <h2 className="text-2xl md:text-4xl font-extrabold text-[#111111] tracking-tight">
-              Essential Categories
-            </h2>
-          </div>
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stone-800 hover:text-black hover:translate-x-0.5 transition-transform"
-          >
-            <span>Explore All Categories</span>
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
+        <SectionHeading
+          tag="Curated Categories"
+          title="Designed for Every Occasion"
+          subtitle="Explore distinct collections tailored for Bangladeshi climate, festivities, and daily city life."
+          linkText="View All Collections"
+          linkHref="/shop"
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {CATEGORIES.map(category => (
-            <CategoryCard key={category.slug} category={category} />
+            <CategoryCard key={category.id} category={category} />
           ))}
         </div>
       </section>
 
-      {/* Featured / Signature Collection */}
+      {/* 3. Featured Products */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <SectionHeading
-            eyebrow="Hand-Selected"
-            title="Signature Pieces"
-            subtitle="Our most celebrated garments crafted with pure silk, mercerized cotton, and precision tailoring."
-          />
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stone-800 hover:text-black mb-6"
-          >
-            <span>View Full Catalog</span>
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
+        <SectionHeading
+          tag="Handpicked By Stylists"
+          title="Featured Essentials"
+          subtitle="Signature bestsellers built on meticulous tailoring, premium fibers, and understated details."
+          linkText="Browse All"
+          linkHref="/shop"
+        />
 
-        <ProductGrid products={featuredProducts} loading={loading} />
+        <ProductGrid products={featuredProducts} columns={4} />
       </section>
 
-      {/* Brand Craftsmanship Spotlight */}
+      {/* 4. Brand Fabric Story / Craftsmanship Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#18181A] rounded-3xl overflow-hidden border border-stone-800 shadow-xl grid grid-cols-1 lg:grid-cols-2 items-center">
-          <div className="p-8 sm:p-12 lg:p-16 text-white space-y-6">
-            <span className="text-xs uppercase tracking-[0.25em] font-bold text-amber-400">
-              Fabric Engineering
+        <div className="bg-neutral-900 text-white rounded-xl overflow-hidden p-8 sm:p-12 lg:p-16 border border-neutral-800">
+          <div className="max-w-2xl">
+            <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold mb-2 block">
+              Craftsmanship & Heritage
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-serif tracking-tight leading-snug">
-              Every Stitch is a Commitment to Dhaka's Sartorial Standard.
+            <h2
+              className="text-2xl sm:text-4xl font-bold tracking-tight text-white mb-4"
+              style={{ fontFamily: "'Syne', sans-serif", textWrap: 'balance' }}
+            >
+              Tailored for Bangladesh, Inspired by Global Simplicity
             </h2>
-            <p className="text-sm text-stone-300 leading-relaxed font-light">
-              We reject synthetic poly-blends in favor of long-staple Egyptian cotton, handloom mulberry silk, and European linen that breathes through humid Dhaka weather while maintaining a crisp, architectural silhouette.
+            <p className="text-sm sm:text-base text-neutral-300 font-light leading-relaxed mb-8">
+              At NOIR MEN, we believe menswear should endure season after season. We source breathable Egyptian cotton, long-staple flax linen, and artisanal jacquard weaves designed specifically for Dhaka’s dynamic climate. Each garment is engineered with comfort collars, reinforced seams, and modern tapered fits.
             </p>
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-3 text-xs text-stone-200">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Single-needle French seams for smooth interior comfort</span>
+            <div className="grid grid-cols-3 gap-4 border-t border-neutral-800 pt-6">
+              <div>
+                <span className="text-xl sm:text-2xl font-bold text-white tabular-nums">260+</span>
+                <p className="text-[11px] text-neutral-400 uppercase tracking-wider mt-0.5">GSM Combed Cotton</p>
               </div>
-              <div className="flex items-center gap-3 text-xs text-stone-200">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Custom mother-of-pearl and natural horn closures</span>
+              <div>
+                <span className="text-xl sm:text-2xl font-bold text-white tabular-nums">64</span>
+                <p className="text-[11px] text-neutral-400 uppercase tracking-wider mt-0.5">Districts Delivered</p>
               </div>
-              <div className="flex items-center gap-3 text-xs text-stone-200">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Zero advance Cash on Delivery with doorstep fitting review</span>
+              <div>
+                <span className="text-xl sm:text-2xl font-bold text-white tabular-nums">100%</span>
+                <p className="text-[11px] text-neutral-400 uppercase tracking-wider mt-0.5">Cash on Delivery</p>
               </div>
             </div>
-            <div className="pt-4">
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-200 text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full transition-colors"
-              >
-                <span>Read Our Craft Story</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="h-full min-h-[360px] lg:min-h-[500px] relative">
-            <img
-              src="/assets/images/category_shirt_1790217968360.jpg"
-              alt="Craftsmanship and Fabric"
-              className="w-full h-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-black/80 via-transparent to-transparent" />
           </div>
         </div>
       </section>
 
-      {/* New Arrivals */}
+      {/* 5. New Arrivals */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <SectionHeading
-            eyebrow="Just Landed"
-            title="Fresh Arrivals"
-            subtitle="The newest silhouettes ready for immediate nationwide dispatch."
-          />
-          <Link
-            to="/shop?sort=newest"
-            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-stone-800 hover:text-black mb-6"
-          >
-            <span>View All New Arrivals</span>
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
+        <SectionHeading
+          tag="Just Dropped"
+          title="New Arrivals"
+          subtitle="The latest silhouettes in ceremonial Panjabi, relaxed tees, and tailored workwear."
+          linkText="Shop Newest"
+          linkHref="/shop?sort=newest"
+        />
 
-        <ProductGrid products={newArrivals} loading={loading} />
+        <ProductGrid products={newArrivals} columns={4} />
+      </section>
+
+      {/* 6. Why Choose Us (Trust-Focused Benefits) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-neutral-100/80 rounded-xl p-8 sm:p-12 border border-neutral-200">
+          <div className="text-center max-w-xl mx-auto mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900 mb-2">
+              Why Shop With NOIR MEN
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-600">
+              Confidence, convenience, and craftsmanship in every order across Bangladesh.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            <div className="bg-white p-6 rounded-lg border border-neutral-200/80 flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                <Award className="w-6 h-6 stroke-[1.5]" />
+              </div>
+              <h3 className="font-semibold text-neutral-900 text-sm mb-1">Premium Quality</h3>
+              <p className="text-xs text-neutral-500 leading-relaxed">
+                Hand-inspected fabrics, zero-pucker stitching, and high-density long staple fibers.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg border border-neutral-200/80 flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                <Clock className="w-6 h-6 stroke-[1.5]" />
+              </div>
+              <h3 className="font-semibold text-neutral-900 text-sm mb-1">Fast Delivery</h3>
+              <p className="text-xs text-neutral-500 leading-relaxed">
+                24 to 48 hours within Dhaka metropolitan; 2 to 3 days for all other 63 districts.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg border border-neutral-200/80 flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                <RefreshCw className="w-6 h-6 stroke-[1.5]" />
+              </div>
+              <h3 className="font-semibold text-neutral-900 text-sm mb-1">Easy Returns</h3>
+              <p className="text-xs text-neutral-500 leading-relaxed">
+                Hassle-free 7-day doorstep size replacement and color exchanges.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg border border-neutral-200/80 flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+                <Shield className="w-6 h-6 stroke-[1.5]" />
+              </div>
+              <h3 className="font-semibold text-neutral-900 text-sm mb-1">Secure Shopping</h3>
+              <p className="text-xs text-neutral-500 leading-relaxed">
+                Verify parcel with courier and pay cash on delivery. 100% risk-free.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Final Strong Call to Action */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-2xl bg-neutral-950 text-white overflow-hidden py-16 px-6 sm:px-12 text-center border border-neutral-900">
+          <div className="relative z-10 max-w-xl mx-auto">
+            <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold mb-2 block">
+              Upgrade Your Wardrobe Today
+            </span>
+            <h2
+              className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
+              Find Your Style
+            </h2>
+            <p className="text-sm text-neutral-400 mb-8 max-w-md mx-auto font-light leading-relaxed">
+              Experience the luxury of tailored Panjabi, shirts, and everyday essentials delivered right to your door with Cash on Delivery.
+            </p>
+            <Link
+              to="/shop"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-neutral-950 text-xs font-bold uppercase tracking-wider rounded hover:bg-neutral-200 transition-colors shadow-lg"
+            >
+              <span>Shop Now</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );

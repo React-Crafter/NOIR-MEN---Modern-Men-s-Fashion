@@ -1,21 +1,39 @@
 import React from 'react';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowDownWideNarrow } from 'lucide-react';
+
+export const SORT_OPTIONS = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'newest', label: 'Newest Arrivals' },
+  { value: 'popular', label: 'Most Popular' },
+  { value: 'price-low', label: 'Price: Low to High' },
+  { value: 'price-high', label: 'Price: High to Low' },
+];
 
 export default function SortDropdown({ value, onChange }) {
   return (
     <div className="relative inline-flex items-center">
-      <ArrowUpDown className="w-3.5 h-3.5 absolute left-3 text-stone-500 pointer-events-none" />
-      <select
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        className="pl-8 pr-8 py-2 text-xs font-semibold uppercase tracking-wider bg-white border border-stone-200 rounded-lg text-stone-800 hover:border-stone-400 focus:outline-hidden focus:ring-1 focus:ring-black appearance-none cursor-pointer shadow-2xs"
-      >
-        <option value="featured">Featured First</option>
-        <option value="newest">New Arrivals</option>
-        <option value="popular">Popular Picks</option>
-        <option value="price_asc">Price: Low to High</option>
-        <option value="price_desc">Price: High to Low</option>
-      </select>
+      <div className="relative flex items-center">
+        <label htmlFor="sort-select" className="text-xs text-neutral-500 mr-2 hidden sm:inline whitespace-nowrap">
+          Sort by:
+        </label>
+        <div className="relative">
+          <select
+            id="sort-select"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="appearance-none bg-white border border-neutral-300 rounded px-3 py-2 pr-8 text-xs font-medium text-neutral-900 hover:border-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-900 cursor-pointer"
+          >
+            {SORT_OPTIONS.map(opt => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neutral-500">
+            <ArrowDownWideNarrow className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

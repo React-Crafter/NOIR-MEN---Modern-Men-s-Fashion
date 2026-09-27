@@ -1,231 +1,179 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, Search, Menu, X, Shield, Package, ArrowRight } from 'lucide-react';
-import { useCart } from '../context/CartContext.jsx';
+import { Link, useLocation } from 'react-router-dom';
+import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+import { useCart } from '../hooks/useCart';
+import SearchBar from './SearchBar';
 
 export default function Navbar() {
-  const { totalItems, setIsCartOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
+  const { totalItems, openCart } = useCart();
   const location = useLocation();
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchOpen(false);
-      setSearchQuery('');
-    }
-  };
-
   const navLinks = [
-    { label: 'All Collection', path: '/shop' },
-    { label: 'Panjabi', path: '/shop?category=panjabi' },
-    { label: 'T-Shirts', path: '/shop?category=t-shirts' },
-    { label: 'Shirts', path: '/shop?category=shirts' },
-    { label: 'Pants', path: '/shop?category=pants' },
-    { label: 'Track Order', path: '/track-order' }
+    { name: 'Home', href: '/' },
+    { name: 'Shop', href: '/shop' },
+    { name: 'Panjabi', href: '/shop?category=panjabi' },
+    { name: 'Shirts', href: '/shop?category=shirts' },
+    { name: 'T-Shirts', href: '/shop?category=t-shirts' },
+    { name: 'Pants', href: '/shop?category=pants' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
   ];
+
+  const primaryDesktopLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'Shop', href: '/shop' },
+    { name: 'Panjabi', href: '/shop?category=panjabi' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+  ];
+
+  const isActive = (href) => {
+    if (href === '/') return location.pathname === '/';
+    return location.pathname + location.search === href || (href === '/shop' && location.pathname === '/shop' && !location.search);
+  };
 
   return (
     <>
-      {/* Top Banner */}
-      <div className="bg-[#111111] text-neutral-300 text-xs py-2 px-4 text-center tracking-wide font-medium flex items-center justify-center gap-3">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>EID & SUMMER COLLECTION '26 • FREE SHIPPING ON ORDERS OVER ৳3,000</span>
-        <span className="hidden md:inline text-neutral-500">|</span>
-        <span className="hidden md:inline text-neutral-400">Cash on Delivery Across 64 Districts</span>
-      </div>
-
-      {/* Main Header */}
-      <header className="sticky top-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-b border-neutral-200/80 transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-          {/* Mobile hamburger */}
-          <div className="flex items-center gap-3 lg:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="p-2 text-neutral-800 hover:text-black focus:outline-none"
-              aria-label="Open navigation menu"
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/80 transition-all">
+        {/* Subtle Top Notification Bar - Desktop / Large Devices only */}
+        <div className="hidden lg:block bg-neutral-900 text-neutral-300 text-[11px] py-1.5 px-4 tracking-wide font-medium">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <span className="truncate">Nationwide Cash on Delivery across Bangladesh · Free Delivery on orders over ৳3,000</span>
+            <Link
+              to="/admin/login"
+              className="inline-flex items-center gap-1 text-[10px] uppercase font-bold text-neutral-400 hover:text-white transition-colors shrink-0 ml-3 bg-neutral-800 px-2 py-0.5 rounded border border-neutral-700"
             >
-              <Menu className="w-6 h-6" />
-            </button>
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-2 text-neutral-800 hover:text-black focus:outline-none"
-              aria-label="Search products"
-            >
-              <Search className="w-5 h-5" />
-            </button>
+              Management
+            </Link>
           </div>
+        </div>
 
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="flex flex-col items-start group">
-              <span className="text-2xl sm:text-3xl font-extrabold tracking-tighter text-[#111111] font-heading flex items-center gap-1.5">
-                NOIR <span className="text-neutral-400 font-light tracking-widest text-lg">MEN</span>
-              </span>
-              <span className="text-[9px] tracking-[0.25em] text-neutral-500 uppercase -mt-1 font-semibold">
-                Dhaka • Atelier
-              </span>
+        {/* Strict 3-Zone Navigation Header */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-4">
+          {/* Zone 1: Single text element Brand Wordmark */}
+          <div className="flex items-center gap-3">
+            {/* Mobile Hamburger toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 -ml-2 text-neutral-800 hover:text-neutral-950 focus:outline-none"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+
+            <Link
+              to="/"
+              className="font-bold tracking-widest text-lg sm:text-xl uppercase text-neutral-950 hover:opacity-90 transition-opacity"
+              style={{ fontFamily: "'Syne', sans-serif" }}
+            >
+              NOIR MEN
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((item) => {
-              const isActive = location.pathname + location.search === item.path;
-              return (
-                <Link
-                  key={item.label}
-                  to={item.path}
-                  className={`text-sm font-medium tracking-tight transition-colors py-1 relative ${
-                    isActive
-                      ? 'text-black font-semibold'
-                      : 'text-neutral-600 hover:text-black'
-                  }`}
-                >
-                  {item.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-black rounded-full" />
-                  )}
-                </Link>
-              );
-            })}
+          {/* Zone 2: Clean text navigation links */}
+          <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider text-neutral-700">
+            {primaryDesktopLinks.map(link => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className={`py-1 transition-colors hover:text-neutral-950 relative ${
+                  isActive(link.href) ? 'text-neutral-950 font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-neutral-900' : ''
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center space-x-3 sm:space-x-5">
-            {/* Desktop Search Toggle */}
+          {/* Zone 3: Primary actions (Search & Cart) */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Search Trigger */}
             <button
+              type="button"
               onClick={() => setSearchOpen(true)}
-              className="hidden lg:flex items-center gap-2 text-xs text-neutral-500 hover:text-black bg-neutral-100 hover:bg-neutral-200/70 px-3.5 py-1.5 rounded-full transition-all border border-neutral-200"
+              className="p-2 text-neutral-700 hover:text-neutral-950 hover:bg-neutral-100 rounded-full transition-colors flex items-center gap-1.5 text-xs"
+              aria-label="Open search dialog"
             >
-              <Search className="w-3.5 h-3.5" />
-              <span>Search panjabi, shirts...</span>
-              <kbd className="text-[10px] bg-white text-neutral-400 px-1.5 py-0.5 rounded border border-neutral-200">⌘K</kbd>
+              <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <span className="hidden md:inline font-medium text-neutral-500">Search</span>
             </button>
 
-            {/* Admin link */}
-            <Link
-              to="/admin"
-              className="p-2 text-neutral-600 hover:text-black transition-colors rounded-full hover:bg-neutral-100 hidden sm:flex items-center gap-1 text-xs font-medium"
-              title="Admin Portal"
-            >
-              <Shield className="w-4 h-4" />
-              <span className="hidden xl:inline">Portal</span>
-            </Link>
-
-            {/* Cart Button */}
+            {/* Shopping Bag Button with Tabular Badge */}
             <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 text-neutral-900 bg-neutral-100 hover:bg-black hover:text-white rounded-full transition-all flex items-center justify-center"
-              aria-label="View Shopping Cart"
+              type="button"
+              onClick={openCart}
+              className="relative p-2 text-neutral-800 hover:text-neutral-950 hover:bg-neutral-100 rounded-full transition-colors"
+              aria-label={`Shopping bag with ${totalItems} items`}
             >
-              <ShoppingBag className="w-5 h-5" />
+              <ShoppingBag className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#111111] text-white text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#FAF9F6]">
+                <span className="absolute top-1 right-1 w-4 h-4 bg-neutral-950 text-white text-[10px] font-bold rounded-full flex items-center justify-center tabular-nums">
                   {totalItems}
                 </span>
               )}
             </button>
           </div>
         </div>
-      </header>
 
-      {/* Search Modal */}
-      {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-start justify-center pt-20 px-4 animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden border border-neutral-200">
-            <form onSubmit={handleSearchSubmit} className="p-4 sm:p-6 flex items-center gap-3 border-b border-neutral-100">
-              <Search className="w-5 h-5 text-neutral-400" />
-              <input
-                type="text"
-                autoFocus
-                placeholder="Search by product name, fabric, style (e.g., Silk Panjabi, Chino)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-base sm:text-lg focus:outline-none placeholder:text-neutral-400 text-neutral-900"
-              />
-              <button
-                type="button"
-                onClick={() => setSearchOpen(false)}
-                className="p-1.5 text-neutral-400 hover:text-black rounded-lg hover:bg-neutral-100"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </form>
-            <div className="p-4 sm:p-6 bg-neutral-50/50">
-              <p className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-3">Popular Searches</p>
-              <div className="flex flex-wrap gap-2">
-                {['Silk Panjabi', 'Cuban Collar Shirt', 'Tech Stretch Chino', 'Waffle Knit Tee', 'Mandarin Linen'].map((term) => (
-                  <button
-                    key={term}
-                    onClick={() => {
-                      navigate(`/shop?search=${encodeURIComponent(term)}`);
-                      setSearchOpen(false);
-                    }}
-                    className="text-xs bg-white border border-neutral-200 hover:border-black px-3 py-1.5 rounded-full text-neutral-700 hover:text-black transition-colors"
+        {/* Mobile Dropdown Navigation Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-neutral-200 bg-white shadow-xl animate-in slide-in-from-top-2 duration-200">
+            <div className="px-5 py-4 space-y-2">
+              <div className="text-[11px] uppercase font-bold tracking-wider text-neutral-400 pb-1">
+                Navigation
+              </div>
+              <div className="grid grid-cols-2 gap-1 pb-3">
+                {navLinks.map(link => (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`px-3 py-2 text-xs font-medium rounded transition-colors ${
+                      isActive(link.href)
+                        ? 'bg-neutral-900 text-white font-semibold'
+                        : 'text-neutral-800 hover:bg-neutral-100'
+                    }`}
                   >
-                    {term}
-                  </button>
+                    {link.name}
+                  </Link>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          <div className="relative w-4/5 max-w-sm bg-[#FAF9F6] h-full shadow-2xl flex flex-col p-6 z-10">
-            <div className="flex items-center justify-between pb-6 border-b border-neutral-200">
-              <span className="text-xl font-extrabold tracking-tight font-heading">NOIR MEN</span>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-neutral-700 hover:text-black"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="py-6 space-y-4 flex-1 overflow-y-auto">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-lg font-medium text-neutral-800 hover:text-black py-2"
+              {/* Quick direct search link & Management */}
+              <div className="pt-2 border-t border-neutral-100 space-y-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setSearchOpen(true);
+                  }}
+                  className="w-full flex items-center justify-between p-2.5 bg-neutral-50 text-neutral-700 rounded text-xs hover:bg-neutral-100"
                 >
-                  {item.label}
-                </Link>
-              ))}
+                  <span className="flex items-center gap-2">
+                    <Search className="w-3.5 h-3.5 text-neutral-400" />
+                    <span>Search all products</span>
+                  </span>
+                  <span className="text-[10px] text-neutral-400">Tap to search</span>
+                </button>
 
-              <div className="pt-4 border-t border-neutral-200">
                 <Link
-                  to="/admin"
+                  to="/admin/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 text-sm font-semibold text-neutral-700 hover:text-black py-2"
+                  className="w-full flex items-center justify-center p-2.5 bg-neutral-900 text-white rounded text-xs hover:bg-neutral-800 font-semibold transition-colors"
                 >
-                  <Shield className="w-4 h-4" />
-                  Admin Manager Portal
+                  Management
                 </Link>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-neutral-200 text-xs text-neutral-500">
-              <p className="font-semibold text-neutral-800">Support Hotline: +880 1700-000000</p>
-              <p className="mt-1">Gulshan 2, Dhaka, Bangladesh</p>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+      </header>
+
+      {/* Global Search Dialog */}
+      <SearchBar isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }

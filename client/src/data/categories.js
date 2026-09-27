@@ -1,44 +1,47 @@
+import panjabiImg from '../assets/images/category_panjabi_1790217944904.jpg';
+import tshirtImg from '../assets/images/category_tshirt_1790217958167.jpg';
+import shirtImg from '../assets/images/category_shirt_1790217968360.jpg';
+import pantsImg from '../assets/images/category_pants_1790217977864.jpg';
+
 export const CATEGORIES = [
   {
     id: 'panjabi',
     slug: 'panjabi',
-    name: 'Signature Panjabi',
-    shortName: 'Panjabi',
-    tagline: 'Artisanal Festive & Formal Silhouettes',
-    description: 'Exquisite silk, jacquard, and Egyptian cotton Panjabis tailored with mandarin collars and hand-detailed plackets.',
-    image: '/assets/images/category_panjabi_1790217944904.jpg',
-    itemCount: 6
-  },
-  {
-    id: 'shirts',
-    slug: 'shirts',
-    name: 'Executive & Casual Shirts',
-    shortName: 'Shirts',
-    tagline: 'Precision Tailored Luxury Cotton',
-    description: 'Egyptian Giza cotton formal and casual shirts designed with clean Italian collars and single-needle tailoring.',
-    image: '/assets/images/category_shirt_1790217968360.jpg',
-    itemCount: 6
+    name: 'Panjabi',
+    subtitle: 'Signature Bangladeshi Festive & Daily Heritage',
+    description: 'Bespoke cuts, handcrafted plackets, and breathable luxury fabrics made for modern celebration.',
+    image: panjabiImg,
+    itemCount: '6 Designs',
+    startingPrice: 1850,
   },
   {
     id: 't-shirts',
     slug: 't-shirts',
-    name: 'Heavyweight T-Shirts & Polos',
-    shortName: 'T-Shirts & Polos',
-    tagline: '240 GSM Combed Cotton Essentials',
-    description: 'Boxy drop-shoulder t-shirts and luxury pique polos built with heavyweight combed cotton for effortless daily wear.',
-    image: '/assets/images/category_tshirt_1790217958167.jpg',
-    itemCount: 6
+    name: 'T-Shirts',
+    subtitle: 'Heavyweight Minimalist Combed Cotton',
+    description: '240+ GSM structured cotton engineered for daily silhouette retention and tropical comfort.',
+    image: tshirtImg,
+    itemCount: '5 Designs',
+    startingPrice: 750,
+  },
+  {
+    id: 'shirts',
+    slug: 'shirts',
+    name: 'Shirts',
+    subtitle: 'Tailored Linen & Crisp Formal Poplin',
+    description: 'Mandarin collars, French plackets, and washed linen blends crafted for desk-to-dinner style.',
+    image: shirtImg,
+    itemCount: '5 Designs',
+    startingPrice: 1350,
   },
   {
     id: 'pants',
     slug: 'pants',
-    name: 'Trousers & Chinos',
-    shortName: 'Pants',
-    tagline: 'Structured Drapes & Modern Cuts',
-    description: 'Gurkha pleats, tapered ankle trousers, and elastane-infused stretch twill chinos engineered for comfort and authority.',
-    image: '/assets/images/category_pants_1790217977864.jpg',
-    itemCount: 6
+    name: 'Pants',
+    subtitle: 'Precision Tailored Chinos & Pleated Trousers',
+    description: 'Smart stretch fabric, comfort waistbands, and clean tapered hems engineered for versatility.',
+    image: pantsImg,
+    itemCount: '4 Designs',
+    startingPrice: 1750,
   }
 ];
-
-export default CATEGORIES;

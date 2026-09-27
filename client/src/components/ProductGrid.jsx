@@ -1,32 +1,33 @@
 import React from 'react';
-import ProductCard from './ProductCard.jsx';
-import EmptyState from './EmptyState.jsx';
+import ProductCard from './ProductCard';
+import EmptyState from './EmptyState';
 
-export default function ProductGrid({ products = [], loading = false, emptyMessage = 'No products found matching your criteria.' }) {
-  if (loading) {
+export default function ProductGrid({
+  products = [],
+  columns = 4, // 3 or 4
+  emptyTitle,
+  emptyDescription,
+  onResetFilters
+}) {
+  if (products.length === 0) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="animate-pulse bg-white rounded-2xl border border-stone-200/60 p-4">
-            <div className="aspect-3/4 bg-stone-200 rounded-xl mb-3" />
-            <div className="h-3 bg-stone-200 rounded-sm w-1/3 mb-2" />
-            <div className="h-4 bg-stone-200 rounded-sm w-3/4 mb-3" />
-            <div className="h-4 bg-stone-200 rounded-sm w-1/2 mb-4" />
-            <div className="h-9 bg-stone-200 rounded-xl w-full" />
-          </div>
-        ))}
-      </div>
+      <EmptyState
+        title={emptyTitle || 'No products found'}
+        description={emptyDescription || 'We could not find any products matching your criteria. Try resetting filters.'}
+        actionText="Clear Filters"
+        onActionClick={onResetFilters}
+      />
     );
   }
 
-  if (!products || products.length === 0) {
-    return <EmptyState description={emptyMessage} />;
-  }
+  const gridColsClass = columns === 3
+    ? 'grid-cols-2 md:grid-cols-3'
+    : 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+    <div className={`grid ${gridColsClass} gap-3 sm:gap-6`}>
       {products.map(product => (
-        <ProductCard key={product._id || product.customId} product={product} />
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );

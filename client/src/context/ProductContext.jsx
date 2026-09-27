@@ -1,203 +1,80 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { fetchProducts, checkServerHealth } from '../services/api.js';
-import { INITIAL_PRODUCTS } from '../data/products.js';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { api } from '../services/api';
+import { PRODUCTS as INITIAL_PRODUCTS } from '../data/products';
 
 const ProductContext = createContext(null);
 
 export function ProductProvider({ children }) {
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [toasts, setToasts] = useState([]);
-  const [serverStatus, setServerStatus] = useState({ mongodb: 'checking' });
+  const [error, setError] = useState(null);
 
-  // Admin state
-  const [adminUser, setAdminUser] = useState(() => {
+  const fetchProducts = useCallback(async () => {
     try {
-      const saved = localStorage.getItem('noir_admin_user');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
-
-  // Cart state persisted to localStorage
-  const [cart, setCart] = useState(() => {
-    try {
-      const saved = localStorage.getItem('noir_cart');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // Save cart changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('noir_cart', JSON.stringify(cart));
-    } catch (e) {
-      console.warn('LocalStorage error:', e);
-    }
-  }, [cart]);
-
-  // Load products on mount
-  useEffect(() => {
-    let mounted = true;
-    async function loadData() {
       setLoading(true);
-      try {
-        const data = await fetchProducts();
-        if (mounted && data && data.length > 0) {
-          setProducts(data);
-        }
-      } catch (err) {
-        console.warn('Error loading products:', err);
-      } finally {
-        if (mounted) setLoading(false);
+      const res = await api.getProducts();
+      if (res.success && Array.isArray(res.data) && res.data.length > 0) {
+        setProducts(res.data);
+        setError(null);
       }
+    } catch (err) {
+      console.warn('API getProducts fallback to local data:', err.message);
+      // Fallback to initial products if backend is booting
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    async function checkHealth() {
-      try {
-        const health = await checkServerHealth();
-        if (mounted) setServerStatus(health);
-      } catch {
-        if (mounted) setServerStatus({ mongodb: 'disconnected' });
-      }
-    }
-
-    loadData();
-    checkHealth();
-
-    return () => { mounted = false; };
   }, []);
 
-  // Toast notifier
-  const addToast = (message, type = 'success') => {
-    const id = Date.now() + Math.random();
-    setToasts(prev => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id));
-    }, 3500);
-  };
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
-  const removeToast = (id) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
-  };
+  const getProductById = useCallback((id) => {
+    if (!id) return null;
+    return products.find(p => p.id === id || p.customId === id || p._id === id);
+  }, [products]);
 
-  // Cart Actions
-  const addToCart = (product, selectedSize, selectedColor, quantity = 1) => {
-    const size = selectedSize || (product.sizes && product.sizes[0]) || 'Free Size';
-    const color = selectedColor || (product.colors && product.colors[0]?.name) || 'Standard';
-    const itemKey = `${product._id || product.customId}-${size}-${color}`;
-
-    setCart(prev => {
-      const existing = prev.find(item => item.key === itemKey);
-      if (existing) {
-        return prev.map(item =>
-          item.key === itemKey
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [
-        ...prev,
-        {
-          key: itemKey,
-          productId: product._id || product.customId,
-          customId: product.customId,
-          name: product.name,
-          category: product.category,
-          price: product.price,
-          previousPrice: product.previousPrice,
-          image: product.images?.[0] || '/assets/images/hero_noir_men_1790217929182.jpg',
-          size,
-          color,
-          quantity
-        }
-      ];
-    });
-
-    addToast(`Added "${product.name}" (${size}) to your bag`);
-    setIsCartOpen(true);
-  };
-
-  const updateCartQuantity = (itemKey, delta) => {
-    setCart(prev =>
-      prev
-        .map(item => {
-          if (item.key === itemKey) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean)
-    );
-  };
-
-  const removeFromCart = (itemKey) => {
-    setCart(prev => prev.filter(item => item.key !== itemKey));
-    addToast('Item removed from bag', 'info');
-  };
-
-  const clearCart = () => {
-    setCart([]);
-  };
-
-  // Cart calculations
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  // Admin auth
-  const setAdminSession = (user) => {
-    setAdminUser(user);
-    if (user) {
-      localStorage.setItem('noir_admin_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('noir_admin_user');
+  const createProduct = async (productData) => {
+    const res = await api.createProduct(productData);
+    if (res.success && res.data) {
+      setProducts(prev => [res.data, ...prev]);
     }
+    return res;
   };
 
-  const logoutAdmin = () => {
-    setAdminUser(null);
-    localStorage.removeItem('noir_admin_user');
-    addToast('Logged out of Admin Portal', 'info');
+  const updateProduct = async (id, productData) => {
+    const res = await api.updateProduct(id, productData);
+    if (res.success && res.data) {
+      setProducts(prev =>
+        prev.map(p => (p.id === id || p.customId === id || p._id === id ? res.data : p))
+      );
+    }
+    return res;
   };
 
-  return (
-    <ProductContext.Provider
-      value={{
-        products,
-        setProducts,
-        loading,
-        selectedCategory,
-        setSelectedCategory,
-        searchQuery,
-        setSearchQuery,
-        cart,
-        cartCount,
-        cartSubtotal,
-        isCartOpen,
-        setIsCartOpen,
-        addToCart,
-        updateCartQuantity,
-        removeFromCart,
-        clearCart,
-        toasts,
-        addToast,
-        removeToast,
-        serverStatus,
-        adminUser,
-        setAdminSession,
-        logoutAdmin
-      }}
-    >
-      {children}
-    </ProductContext.Provider>
-  );
+  const deleteProduct = async (id) => {
+    const res = await api.deleteProduct(id);
+    if (res.success) {
+      setProducts(prev =>
+        prev.filter(p => p.id !== id && p.customId !== id && p._id !== id)
+      );
+    }
+    return res;
+  };
+
+  const value = {
+    products,
+    loading,
+    error,
+    refreshProducts: fetchProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
+  };
+
+  return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
 }
 
 export function useProducts() {
@@ -207,5 +84,3 @@ export function useProducts() {
   }
   return context;
 }
-
-export default ProductContext;

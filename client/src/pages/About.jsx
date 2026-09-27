@@ -1,87 +1,93 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Award, Compass, Feather } from 'lucide-react';
+import { ArrowRight, Sparkles, Feather, Scissors, ShieldCheck } from 'lucide-react';
+import heroImg from '../assets/images/hero_noir_men_1790217929182.jpg';
 
 export default function About() {
   return (
-    <div className="py-12 md:py-20 space-y-16">
-      {/* Header */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-        <span className="text-xs uppercase tracking-[0.25em] font-bold text-stone-500">
-          The Atelier Philosophy
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-black text-stone-900 font-serif tracking-tight leading-tight">
-          Where Artisanal Heritage Meets Contemporary Sartorial Discipline.
-        </h1>
-        <p className="text-base sm:text-lg text-stone-600 font-light leading-relaxed max-w-2xl mx-auto">
-          Founded in Dhaka, NOIR MEN was conceived with a single, uncompromising vision: to elevate Bangladeshi menswear into an international standard of luxury and architectural fit.
-        </p>
-      </div>
-
-      {/* Hero Image */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="aspect-16/9 rounded-3xl overflow-hidden shadow-xl border border-stone-200">
-          <img
-            src="/assets/images/hero_noir_men_1790217929182.jpg"
-            alt="NOIR MEN Atelier"
-            className="w-full h-full object-cover object-top"
-          />
-        </div>
-      </div>
-
-      {/* 3 Pillars */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-2xl p-8 border border-stone-200/90 shadow-2xs space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-stone-100 flex items-center justify-center text-stone-900">
-              <Feather className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-stone-900">Natural Fibers Only</h3>
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-light">
-              We never use cheap synthetic blends that trap heat and pill after three washes. Every yarn is spun from authentic long-staple cotton, natural mulberry silk, and European linen.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 border border-stone-200/90 shadow-2xs space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-stone-100 flex items-center justify-center text-stone-900">
-              <Compass className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-stone-900">Architectural Silhouette</h3>
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-light">
-              Our patterns are drafted specifically for South Asian postures—providing a structured shoulder drape, clean taper across the torso, and effortless movement in tropical climates.
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 border border-stone-200/90 shadow-2xs space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-stone-100 flex items-center justify-center text-stone-900">
-              <Award className="w-6 h-6" />
-            </div>
-            <h3 className="text-xl font-bold text-stone-900">Honest Commerce</h3>
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-light">
-              Zero advance payment Cash on Delivery across all 64 districts in Bangladesh. We believe trust is earned at the doorstep when you feel the fabric in your hands.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <div className="bg-[#111111] text-white rounded-3xl p-10 sm:p-14 space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-black font-serif">
-            Experience the NOIR MEN Standard
-          </h2>
-          <p className="text-xs sm:text-sm text-stone-300 max-w-md mx-auto">
-            Order online with full Cash on Delivery protection and door-to-door sizing exchange.
+    <div className="pb-16 sm:pb-24">
+      {/* Hero Banner */}
+      <section className="bg-neutral-900 text-white py-16 sm:py-24 border-b border-neutral-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="text-xs uppercase tracking-widest text-neutral-400 font-semibold mb-2 block">
+            The Brand Story
+          </span>
+          <h1
+            className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+          >
+            Modern Men's Fashion
+          </h1>
+          <p className="text-base sm:text-lg text-neutral-300 font-light leading-relaxed max-w-2xl mx-auto">
+            Born in Dhaka, crafted for the discerning modern man. Elevating Bangladeshi menswear through refined minimalism and uncompromising quality.
           </p>
+        </div>
+      </section>
+
+      {/* Main Editorial Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 space-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 bg-white text-stone-950 hover:bg-stone-200 text-xs font-bold uppercase tracking-wider px-8 py-3.5 rounded-full transition-colors"
+            <h2
+              className="text-2xl font-bold tracking-tight text-neutral-900 mb-4"
+              style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              <span>Explore The Collection</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              Our Philosophy
+            </h2>
+            <p className="text-sm text-neutral-600 leading-relaxed mb-4">
+              NOIR MEN was founded with a singular conviction: Bangladeshi men deserve contemporary garments that seamlessly honor cultural heritage while providing the crisp lines and understated poise of modern luxury.
+            </p>
+            <p className="text-sm text-neutral-600 leading-relaxed">
+              From our signature monochromatic silk Panjabis to our 260+ GSM heavyweight drop-shoulder t-shirts, every piece is designed for longevity, breathability in high humidity, and effortless pairing.
+            </p>
           </div>
+
+          <div className="rounded-xl overflow-hidden shadow-md aspect-[4/3] bg-neutral-100">
+            <img
+              src={heroImg}
+              alt="NOIR MEN Craft"
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Pillars */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-neutral-200">
+          <div className="p-6 bg-white rounded-lg border border-neutral-200">
+            <Feather className="w-6 h-6 text-neutral-900 mb-3" />
+            <h3 className="font-semibold text-neutral-900 text-sm mb-1.5">Natural Fibers</h3>
+            <p className="text-xs text-neutral-500 leading-relaxed">
+              We prioritize organic flax linen, long-staple combed cotton, and mulberry silk blends engineered for our climate.
+            </p>
+          </div>
+
+          <div className="p-6 bg-white rounded-lg border border-neutral-200">
+            <Scissors className="w-6 h-6 text-neutral-900 mb-3" />
+            <h3 className="font-semibold text-neutral-900 text-sm mb-1.5">Precision Tailoring</h3>
+            <p className="text-xs text-neutral-500 leading-relaxed">
+              Every collar curve, placket stitch, and pant taper is rigorously fitted across standard Bangladeshi body profiles.
+            </p>
+          </div>
+
+          <div className="p-6 bg-white rounded-lg border border-neutral-200">
+            <ShieldCheck className="w-6 h-6 text-neutral-900 mb-3" />
+            <h3 className="font-semibold text-neutral-900 text-sm mb-1.5">Responsible Value</h3>
+            <p className="text-xs text-neutral-500 leading-relaxed">
+              Transparent pricing, direct-to-consumer accessibility, and risk-free Cash on Delivery nationwide.
+            </p>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center pt-8">
+          <Link
+            to="/shop"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider rounded hover:bg-neutral-800 transition-colors"
+          >
+            <span>Explore The Collection</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </div>
